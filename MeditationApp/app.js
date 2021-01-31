@@ -43,7 +43,7 @@ const app = () => {
     //aniamties
     song.ontimeupdate = () => {
         //tijd
-        let currentTime = song.curretnTime;
+        let currentTime = song.currentTime;
         let elapsed = fakeDuration - currentTime;
         let seconds = Math.floor(elapsed % 60);
         let minutes = Math.floor(elapsed / 60);
