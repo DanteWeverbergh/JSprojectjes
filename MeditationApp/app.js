@@ -21,7 +21,7 @@ const app = () => {
 
     // pay sound
     play.addEventListener('click', () => {
-       checkPlaying(song);
+        checkPlaying(song);
     });
 
 
@@ -31,12 +31,35 @@ const app = () => {
             song.play();
             video.play();
             play.src = './svg/pause.svg';
-        }else{
+        } else {
             song.pause();
             video.pause();
             play.src = './svg/play.svg';
         }
     };
+
+
+
+    //aniamties
+    song.ontimeupdate = () => {
+        //tijd
+        let currentTime = song.curretnTime;
+        let elapsed = fakeDuration - currentTime;
+        let seconds = Math.floor(elapsed % 60);
+        let minutes = Math.floor(elapsed / 60);
+
+        //circle
+        let progess = outlineLength - (currentTime / fakeDuration) * outlineLength;
+        outline.style.strokeDashoffset = progess;
+
+        //tekst
+        timeDisplay.textContent = `${minutes}:${seconds}`
+    };
+
+
+
+
+
 };
 
 app();
