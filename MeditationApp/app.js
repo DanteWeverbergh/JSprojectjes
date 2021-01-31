@@ -5,9 +5,10 @@ const app = () => {
     const video = document.querySelector('.vid-container video');
 
     //sounds
-    const sounds = document.querySelectorAll('sound-picker button');
+    const sounds = document.querySelectorAll('.sound-picker button');
     //time display
     const timeDisplay = document.querySelector('.time-display');
+    const timeSelect = document.querySelectorAll('.time-select button');
     //lenghte van de outline
     const outlineLength = outline.getTotalLength();
     console.log(outlineLength);
@@ -19,24 +20,44 @@ const app = () => {
     outline.style.strokeDashoffset = outlineLength;
 
 
+    // verschillende geluiden kiezen
+    sounds.forEach(sound=> {
+        sound.addEventListener('click', function() {
+            song.src = this.getAttribute('data-sound');
+            video.src = this.getAttribute('data-video');
+            checkPlaying();
+        })
+    })
+
+
     // pay sound
     play.addEventListener('click', () => {
         checkPlaying(song);
     });
 
 
+    timeSelect.forEach(option => {
+        option.addEventListener("click", function() {
+          fakeDuration = this.getAttribute("data-time");
+          timeDisplay.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(
+            fakeDuration % 60
+          )}`;
+        });
+      });
+
+
     //functio -> stop en play sounds
     const checkPlaying = song => {
         if (song.paused) {
-            song.play();
-            video.play();
-            play.src = './svg/pause.svg';
+          song.play();
+          video.play();
+          play.src = "./svg/pause.svg";
         } else {
-            song.pause();
-            video.pause();
-            play.src = './svg/play.svg';
+          song.pause();
+          video.pause();
+          play.src = "./svg/play.svg";
         }
-    };
+      };
 
 
 
@@ -53,7 +74,18 @@ const app = () => {
         outline.style.strokeDashoffset = progess;
 
         //tekst
-        timeDisplay.textContent = `${minutes}:${seconds}`
+        timeDisplay.textContent = `${minutes}:${seconds}`;
+
+
+        // zorgen dat time niet negatief wordt
+
+    if(currentTime >= fakeDuration){
+        song.pause();
+        song.currentTime = 0;
+        play.src = './svg/play.svg';
+        video.pause();
+    }
+
     };
 
 
